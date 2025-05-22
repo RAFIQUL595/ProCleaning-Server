@@ -25,7 +25,15 @@ let serviceCollection;
 async function run() {
   try {
     await client.connect();
-  
+
+    // Collection Section
+    serviceCollection = client.db("cleaningDb").collection("services");
+
+    // GET all services
+    app.get("/services", async (req, res) => {
+      const services = await serviceCollection.find().toArray();
+      res.send(services);
+    });
 
     // Ping the database to ensure connection
     await client.db("admin").command({ ping: 1 });
