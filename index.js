@@ -24,11 +24,12 @@ let serviceCollection;
 
 async function run() {
   try {
-    await client.connect();
+    // await client.connect();
 
     // Collection Section
     serviceCollection = client.db("cleaningDb").collection("services");
     blogCollection = client.db("cleaningDb").collection("blogs");
+    reviewCollection = client.db("cleaningDb").collection("reviews");
 
     // GET all services
     app.get("/services", async (req, res) => {
@@ -50,8 +51,14 @@ async function run() {
       res.send(result);
     });
 
+    // Get all reviews
+    app.get("/reviews", async (req, res) => {
+      const reviews = await reviewCollection.find().toArray();
+      res.send(reviews);
+    });
+
     // Ping the database to ensure connection
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log("Connected to MongoDB successfully!");
   } catch (error) {
     console.error("Failed to connect to MongoDB:", error);
