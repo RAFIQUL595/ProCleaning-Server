@@ -3,7 +3,7 @@ const cors = require("cors");
 const app = express();
 require("dotenv").config();
 const port = process.env.PORT || 9000;
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 // Middleware
 app.use(cors());
@@ -40,6 +40,14 @@ async function run() {
     app.get("/blogs", async (req, res) => {
       const blogs = await blogCollection.find().toArray();
       res.send(blogs);
+    });
+
+    // Get a single blog by ID
+    app.get("/blog/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await blogCollection.findOne(query);
+      res.send(result);
     });
 
     // Ping the database to ensure connection
