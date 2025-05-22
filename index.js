@@ -28,11 +28,18 @@ async function run() {
 
     // Collection Section
     serviceCollection = client.db("cleaningDb").collection("services");
+    blogCollection = client.db("cleaningDb").collection("blogs");
 
     // GET all services
     app.get("/services", async (req, res) => {
       const services = await serviceCollection.find().toArray();
       res.send(services);
+    });
+
+    // Get all blogs
+    app.get("/blogs", async (req, res) => {
+      const blogs = await blogCollection.find().toArray();
+      res.send(blogs);
     });
 
     // Ping the database to ensure connection
